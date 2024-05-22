@@ -31,9 +31,9 @@ Parameters:
 
 The `risk` and `reward` parameters will be converted to log returns, relative to an ES contract valued at 5000 points (this can be changd in `prop_2.py`). These return values will then set the mean and standard deviation of a normal distribution, which will be sampled to generate the simulated equity curves. There are several modes of input:
 
-    - basis points: e.g. `0.0004` means a 4 basis point risk or return
-    - dollars: `$500` means a risk or reward value of $500.
-    - ES multiplier: `1x` or `0.5x` means one or 1/2 times the risk or reward of ES. 
-    - Binomial: `0.6:2` means 60% chance of two points. `0.51:1` means 51% chance of 1 point, and so on. This can be used for risk and reward alike. The point value should be positive, even for the risk parameter. For example reward = `0.6:2`, risk = `0.4:2` means a 60% win rate, 1:1 RR with R = 2 ES points.
+- basis points: e.g. `0.0004` means a 4 basis point risk or return
+- dollars: `$500` means a risk or reward value of $500.
+- ES multiplier: `1x` or `0.5x` means one or 1/2 times the risk or reward of ES. 
+- binomial: `0.6:2` means 60% chance of two points. `0.51:1` means 51% chance of 1 point, and so on. This can be used for risk and reward alike. The point value should be positive, even for the risk parameter. For example reward = `0.6:2`, risk = `0.4:2` means a 60% win rate, 1:1 RR with R = 2 ES points.
 
 The `mode` parameter serves as an index to a dictionary of values. This dictionary sits at the top of `prop_2.py`. You can edit these values as you see fit, e.g. to create a personal account with a different drawdown, or to change the profit sharing rate, to change the eval fees, and so on. For the existing profiles, any potentially-material rules that I am aware of, and that have been ignored, are noted in the comments.
