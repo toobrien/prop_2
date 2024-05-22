@@ -410,12 +410,88 @@ def fig_5():
     fig.show()
 
 
+def fig_6():
+
+    text = [
+        "\nopportunity cost, percentiles",
+        "tradeday 50k, 1 mini vs. personal 2k 1 mini vs. personal 2k, 1 micro",
+        "novice, experienced, and naive",
+        "1 year",
+        "no withdrawals",
+        "5 trades daily",
+        "2 resets, maximum",
+        f"{PARAMS['runs']} runs\n"
+    ]
+
+    for line in text:
+
+        print(line)
+
+    profiles    = get_performance_profiles()
+    results     = {
+        "novice":       {},
+        "experienced":  {},
+        "naive":        {}
+    }
+
+    options = [
+        ("tradeday_50k", "1 mini",  1.0, 16.5 ),
+        ("personal_2k",  "1 mini",  1.0, 16.5 ),
+        ("personal_2k",  "1 micro", 0.1, 2.45 )
+    ]
+
+    for profile in profiles:
+
+        PARAMS["mu"]                            = profile[0]
+        PARAMS["sigma"]                         = profile[1]
+        PARAMS["performance_post_costs"]        = profile[2]
+        profile_name                            = profile[3]
+
+        for option in options:
+            
+            mode                = option[0]
+            size                = option[1]
+            leverage            = option[2]
+            transaction_costs   = option[3]
+            option_name         = f"{mode} {size}"
+
+            PARAMS["mode"]                          = mode
+            PARAMS["leverage"]                      = leverage
+            PARAMS["transaction_costs_per_trade"]   = transaction_costs
+        
+            _, after_cost_returns   = get_total_and_after_cost_returns(sim_runs(**PARAMS))
+            percentiles             = array([ percentile(after_cost_returns, p) for p in X ])
+
+            results[profile_name][option_name] = percentiles
+
+    for profile, res in results.items():
+
+        raw_percentiles = list(res.values())
+
+        for i in range(len(X)):
+
+            best = max([ percentiles[i] for percentiles in raw_percentiles ])
+
+            for j in range(len(raw_percentiles)):
+
+                raw_percentiles[j][i] -= best
+
+        print(f"{profile:25}" + "".join([ f"{str(p) + '%':10}" for p in X ]) + "\n")
+
+        for option, percentiles in res.items():
+
+            print(f"{option:25}" + "".join([ f"{p:<10.2f}" for p in percentiles ]))
+
+        print("\n")
+
+
 FIGS = {
     "fig_1":    fig_1,
     "fig_2":    fig_2,
     "fig_3":    fig_3,
     "fig_4":    fig_4,
-    "fig_5":    fig_5
+    "fig_5":    fig_5,
+    "fig_6":    fig_6
 }
 
 
