@@ -98,7 +98,7 @@ DPY                         = 256
 DPM                         = 21
 T_BILL                      = log(1 + 0.05)
 T_BILL_DAILY                = T_BILL / DPY
-ES                          = 5_000 * 50
+ES                          = 5_430 * 50
 ES_MU                       = 0.0721
 ES_SIGMA                    = 0.1961
 ES_MU_DAILY                 = ES_MU / DPY
@@ -556,6 +556,16 @@ if __name__ == "__main__":
 
     total_returns       = res['ending_equities'] + res['transaction_costs'] + res['profits_shared'] + res['withdrawals']
     return_after_costs  = total_returns - res['transaction_costs'] - res['profits_shared'] - res['prop_fees']
+
+    with open("./out.csv", "w") as fd:
+
+        run_days = res["run_days"]
+
+        fd.write("run_days,return\n")
+
+        for i in range(len(return_after_costs)):
+
+            fd.write(f"{run_days[i]},{return_after_costs[i]}\n")
 
     print("\n-----\n")
 
